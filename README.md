@@ -1,21 +1,43 @@
 # Shapex
 
-**TODO: Add description**
+Shapex is a small library to define contracts for a maps and validate them easily.
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `shapex` to your list of dependencies in `mix.exs`:
+## Example
 
 ```elixir
-def deps do
-  [
-    {:shapex, "~> 0.1.0"}
-  ]
+defmodule UserValidator do
+  alias Shapex.Types, as: S
+  # or import Shapex.Types
+  @user_schema S.map(%{
+    name: S.string(min_length: 3),
+    age: S.integer(gte: {18, "Should be adult"}),
+    email: S.string(regex: ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+    address: S.map(%{
+      street: S.string(),
+      city: S.string(),
+      zip: S.string(min_length: 6)
+    })
+  })
+
+  def validate_user(user_params) do
+    case Shapex.validate(@user_schema, user_params) do
+      {:ok, :valid} -> insert_user(user)
+      {:error, errors} ->
+        Log.error("Validation failed", %{errors: errors})
+        {:error, "Something went wrong"}
+    end
+  end
 end
+
+UserValidator.validate_user(%{
+  name: "John Doe",
+  age: 17,
+  email: "john@google.com",
+  address: %{
+    street: "123 Main St",
+    city: "New York",
+    zip: "10001"
+  })
+
+# {:error, %{age: "Should be adult"}}
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/shapex>.
-
