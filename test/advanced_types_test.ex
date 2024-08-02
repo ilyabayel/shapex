@@ -1,71 +1,58 @@
 defmodule Shapex.AdvancedTypesTest do
   use ExUnit.Case, async: true
 
-  import Shapex.Types
+  alias Shapex.Types, as: S
 
   describe "validate/2" do
-    @xero_line_item_mapping map(%{
-                              line_item_identifier: string(),
-                              account_slug: string()
-                            })
+    @user_schema S.map(%{
+                   name: S.string(min_length: 3),
+                   age: S.integer(gte: {18, "Should be adult"}),
+                   email: S.string(regex: ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/),
+                   address:
+                     S.map(%{
+                       street: S.string(),
+                       city: S.string(),
+                       zip: S.string(min_length: 5)
+                     })
+                 })
 
-    @xero_matching_invoice_configuration map(%{
-                                           line_item_mapping: list(@xero_line_item_mapping)
-                                         })
+    test "valid user" do
+      user = %{
+        name: "John Doe",
+        age: 18,
+        email: "john@google.com",
+        address: %{
+          street: "123 Main St",
+          city: "New York",
+          zip: "000504"
+        }
+      }
 
-    # @xero_department_configuration map(%{
-    #                                  string() => %{
-    #                                    department_slug: string(),
-    #                                    line_item_mapping: @xero_line_item_mapping
-    #                                  }
-    #                                })
-
-    @xero_matching_invoice_account_mapping map(%{
-                                             type: string(eq: "matching_invoice"),
-                                             configuration: @xero_matching_invoice_configuration
-                                           })
-
-    test "should return success if xero matching invoice account mapping valid" do
-      assert Shapex.validate(@xero_matching_invoice_account_mapping, %{
-               type: "matching_invoice",
-               configuration: %{
-                 line_item_mapping: [
-                   %{
-                     line_item_identifier: "line_item_identifier",
-                     account_slug: "account_slug"
-                   }
-                 ]
-               }
-             }) == {:ok, :valid}
+      assert {:ok, :valid} = Shapex.validate(@user_schema, user)
     end
 
-    test "should return error if xero matching invoice account mapping invalid" do
-      assert Shapex.validate(@xero_matching_invoice_account_mapping, %{
-               type: 123,
-               configuration: %{
-                 line_item_mapping: [
-                   %{
-                     account_slug: 23
-                   }
-                 ]
-               }
-             }) == {
-               :error,
-               %{
-                 configuration: %{
-                   line_item_mapping: %{
-                     0 => %{
-                       line_item_identifier: %{required: "Key line_item_identifier is required"},
-                       account_slug: %{type: "Value must be a string"}
-                     }
-                   }
-                 },
-                 type: %{type: "Value must be a string"}
-               }
-             }
-    end
+    test "invalid user" do
+      user = %{
+        name: "Jo",
+        age: 17,
+        email: "john@google",
+        address: %{
+          street: "123 Main St",
+          city: "New York",
+          zip: "1001"
+        }
+      }
 
-    test "should validate xero department account mapping" do
+      assert {:error,
+              %{
+                age: %{gte: "Should be adult"},
+                email: %{
+                  regex:
+                    "String must match the regex ~r/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/"
+                },
+                name: %{min_length: "String length must be at least 3"},
+                address: %{zip: %{min_length: "String length must be at least 5"}}
+              }} = Shapex.validate(@user_schema, user)
     end
   end
 end
