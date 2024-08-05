@@ -1,6 +1,13 @@
 # Shapex
 
 Shapex is a small library to define contracts for a maps and validate them easily.
+Key features:
+- Validate BEAM specific data types like `tuple`, `atom`
+- Define custom data types easily with Shapex.Type behaviour. Documentation coming soon.
+
+## Future plans
+
+- [ ] Add macro to make defining schema easier
 
 ## Example
 

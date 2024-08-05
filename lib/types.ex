@@ -4,6 +4,7 @@ defmodule Shapex.Types do
   alias Shapex.Types.Map
   alias Shapex.Types.List
   alias Shapex.Types.Enum
+  alias Shapex.Types.Record
 
   @doc """
     Integer type for Shapex.
@@ -99,6 +100,13 @@ defmodule Shapex.Types do
   def enum(items) do
     %Enum{
       items: items
+    }
+  end
+
+  def record(key_type, value_type) do
+    %Record{
+      key_type: key_type,
+      value_type: value_type
     }
   end
 end

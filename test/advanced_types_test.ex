@@ -55,4 +55,77 @@ defmodule Shapex.AdvancedTypesTest do
               }} = Shapex.validate(@user_schema, user)
     end
   end
+
+  describe "parsed json" do
+    @config_schema S.map(%{
+                     "type" => S.enum([S.string(eq: "gl"), S.string(eq: "contract")]),
+                     "configuration" =>
+                       S.map(%{
+                         "line" =>
+                           S.list(
+                             S.map(%{
+                               "id" => S.string(),
+                               "slug" => S.string()
+                             })
+                           )
+                       })
+                   })
+
+    S.map(%{
+      "type" =>
+        S.enum([
+          S.string(eq: "gl"),
+          S.string(eq: "contract")
+        ]),
+      "configuration" =>
+        S.map(%{
+          "line" =>
+            S.list(
+              S.map(%{
+                "id" => S.string(),
+                "slug" => S.string()
+              })
+            )
+        })
+    })
+
+    test "valid string key map" do
+      data =
+        %{
+          "type" => "gl",
+          "configuration" => %{
+            "line" => [
+              %{"id" => "1", "slug" => "slug1"},
+              %{"id" => "2", "slug" => "slug2"}
+            ]
+          }
+        }
+
+      assert {:ok, :valid} = Shapex.validate(@config_schema, data)
+    end
+
+    test "invalid string key map" do
+      data = %{
+        "type" => "bla-bla",
+        "configuration" => %{
+          "line" => [
+            %{"id" => "1", "slug" => "slug1"},
+            %{"id" => "2", "slug" => "slug2"}
+          ]
+        }
+      }
+
+      assert {
+               :error,
+               %{
+                 "type" =>
+                   {"Value must be one of",
+                    [
+                      %Shapex.Types.String{validations: [eq: "gl"]},
+                      %Shapex.Types.String{validations: [eq: "contract"]}
+                    ]}
+               }
+             } = Shapex.validate(@config_schema, data)
+    end
+  end
 end
