@@ -25,7 +25,11 @@ defmodule Shapex.Types.RecordTest do
         3 => 3
       }
 
-      assert {:ok, :valid} = Shapex.validate(schema, data)
+      assert {:error,
+              %{
+                "1" => %{value: :valid, key: %{type: "Value must be an integer"}},
+                2 => %{value: %{type: "Value must be an integer"}, key: :valid}
+              }} = Shapex.validate(schema, data)
     end
   end
 end
