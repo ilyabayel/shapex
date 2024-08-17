@@ -1,10 +1,12 @@
 defmodule Shapex.Types do
   alias Shapex.Types.Integer
+  alias Shapex.Types.Float
   alias Shapex.Types.String
   alias Shapex.Types.Map
   alias Shapex.Types.List
   alias Shapex.Types.Enum
   alias Shapex.Types.Record
+  alias Shapex.Types.Atom
 
   @doc """
     Integer type for Shapex.
@@ -39,6 +41,12 @@ defmodule Shapex.Types do
   """
   def integer(validations \\ []) do
     %Integer{
+      validations: validations
+    }
+  end
+
+  def float(validations \\ []) do
+    %Float{
       validations: validations
     }
   end
@@ -107,6 +115,12 @@ defmodule Shapex.Types do
     %Record{
       key_type: key_type,
       value_type: value_type
+    }
+  end
+
+  def atom(validations) do
+    %Atom{
+      validations: validations
     }
   end
 end

@@ -5,9 +5,6 @@ defmodule Shapex.Types.Integer do
 
   @behaviour Shapex.Type
 
-  @enforce_keys [:validations]
-  defstruct [:validations]
-
   @type target(a) :: a | {a, String.t()}
 
   @type validation_rules ::
@@ -19,11 +16,12 @@ defmodule Shapex.Types.Integer do
           | {:neq, target(integer())}
           | {:in, target(list(integer()))}
           | {:not_in, target(list(integer()))}
-          | {:custom, {name :: atom(), function()}}
 
   @type t :: %__MODULE__{
           validations: [validation_rules()]
         }
+
+  defstruct [:validations]
 
   def validate(_, value) when not is_integer(value),
     do: {:error, %{type: "Value must be an integer"}}
