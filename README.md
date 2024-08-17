@@ -2,12 +2,17 @@
 
 Shapex is a small library to define contracts for a maps and validate them easily.
 Key features:
-- Validate BEAM specific data types like `tuple`, `atom`
+- Validate BEAM specific data types like `atom`
 - Define custom data types easily with Shapex.Type behaviour. Documentation coming soon.
 
 ## Future plans
 
 - [ ] Add macro to make defining schema easier
+- [ ] Add more built-in types
+  - [ ] Date
+  - [ ] Time
+  - [ ] DateTime
+- [ ] Add fast mode, wich will validate until first error and return it
 
 ## Example
 
@@ -24,7 +29,8 @@ defmodule UserValidator do
                      street: S.string(),
                      city: S.string(),
                      zip: S.string(min_length: 5)
-                   })
+                   }),
+                 role: S.atom(eq: :admin)
                })
 
   def validate_user(user_params) do
@@ -45,10 +51,15 @@ user = %{
     street: "123 Main St",
     city: "New York",
     zip: "000504"
-  }
+  },
+  role: :member
 }
 
 UserValidator.validate_user(user)
 
-# {:error, %{age: %{gte: "Should be adult"}}
+# {:error, %{age: %{gte: "Should be adult"}, role: %{eq: "Should be :admin"}
 ```
+
+## What is not planned
+
+- Generic Tuple type, since it's not very clear how to validate them the best, so if you need to validate a tuple, please create custom type for it.
