@@ -1,4 +1,10 @@
 defmodule Shapex.Types.Boolean do
+  @moduledoc """
+  This module provides a type for validating booleans.
+
+  It's better to use the Shapex.Types.boolean/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
+  """
   @behaviour Shapex.Type
 
   @type boolean_or_tuple :: boolean() | {boolean(), String.t()}

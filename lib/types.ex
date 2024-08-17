@@ -9,7 +9,7 @@ defmodule Shapex.Types do
   alias Shapex.Types.Map
   alias Shapex.Types.List
   alias Shapex.Types.Enum
-  alias Shapex.Types.Record
+  alias Shapex.Types.Dict
   alias Shapex.Types.Atom
   alias Shapex.Types.Boolean
 
@@ -146,20 +146,20 @@ defmodule Shapex.Types do
 
     ## Example
 
-      schema = record(string(), string())
+      schema = dict(string(), string())
 
-      dict = %{
+      value = %{
         "id1" => "value1",
         "id2" => "value2"
         "id3" => "value3"
       }
 
-      Shapex.validate(schema, dict)
+      Shapex.validate(schema, value)
 
       # {:ok, :valid}
   """
-  def record(key_type, value_type) do
-    %Record{
+  def dict(key_type, value_type) do
+    %Dict{
       key_type: key_type,
       value_type: value_type
     }

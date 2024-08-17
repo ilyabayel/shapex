@@ -1,4 +1,10 @@
 defmodule Shapex.Types.Atom do
+  @moduledoc """
+  This module provides a type for validating atoms.
+
+  It's better to use the Shapex.Types.atom/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
+  """
   @behaviour Shapex.Type
 
   @type atom_or_tuple :: atom() | {atom(), String.t()}

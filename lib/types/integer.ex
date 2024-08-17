@@ -1,6 +1,19 @@
 defmodule Shapex.Types.Integer do
   @moduledoc """
-  Integer types for Shapex
+    This module provides a type for validating integers.
+
+    Existing validations:
+    - :gt - greater than
+    - :gte - greater than or equal to
+    - :lt - less than
+    - :lte - less than or equal to
+    - :eq - equal
+    - :neq - not equal
+    - :in - checks if the value is in a list
+    - :not_in - checks if the value is not in a list
+
+    It's better to use the Shapex.Types.integer/1 function to create a schema,
+    since it covers implementation details and provides a more user-friendly API.
   """
 
   @behaviour Shapex.Type

@@ -1,11 +1,11 @@
-defmodule Shapex.Types.RecordTest do
+defmodule Shapex.Types.DictTest do
   use ExUnit.Case, async: true
 
   alias Shapex.Types, as: S
 
   describe "validate/2" do
     test "should return success on valid data" do
-      schema = S.record(S.string(), S.integer())
+      schema = S.dict(S.string(), S.integer())
 
       data = %{
         "1" => 1,
@@ -17,7 +17,7 @@ defmodule Shapex.Types.RecordTest do
     end
 
     test "should return error on valid data" do
-      schema = S.record(S.integer(), S.integer())
+      schema = S.dict(S.integer(), S.integer())
 
       data = %{
         "1" => 1,

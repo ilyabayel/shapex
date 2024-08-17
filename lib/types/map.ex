@@ -1,4 +1,12 @@
 defmodule Shapex.Types.Map do
+  @moduledoc """
+  This module provides a type for validating maps.
+
+  Maps have a schema that defines the keys and their respective types.
+
+  It's better to use the Shapex.Types.map/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
+  """
   @behaviour Shapex.Type
 
   @type key :: String.t() | atom() | {:optional, String.t()} | {:optional, atom()}

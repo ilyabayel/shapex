@@ -1,13 +1,28 @@
 defmodule Shapex.Types.Float do
+  @moduledoc """
+  This module provides a type for validating floats.
+
+  Existing validations:
+  - :gt - greater than
+  - :gte - greater than or equal to
+  - :lt - less than
+  - :lte - less than or equal to
+  - :eq - equal
+  - :neq - not equal
+  - :in - checks if the value is in a list
+  - :not_in - checks if the value is not in a list
+
+  It's better to use the Shapex.Types.float/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
+  """
+
   @behaviour Shapex.Type
 
   @type float_or_tuple :: float() | {float(), String.t()}
   @type float_list_or_tuple :: list(float()) | {list(float()), String.t()}
 
   @type validations ::
-          {:min, float_or_tuple()}
-          | {:max, float_or_tuple()}
-          | {:lt, float_or_tuple()}
+          {:lt, float_or_tuple()}
           | {:lte, float_or_tuple()}
           | {:gt, float_or_tuple()}
           | {:gte, float_or_tuple()}

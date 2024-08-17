@@ -1,4 +1,10 @@
 defmodule Shapex.Types.List do
+  @moduledoc """
+  Module that contains List type for Shapex.
+
+  It's better to use the Shapex.Types.list/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
+  """
   @behaviour Shapex.Type
 
   @type t :: %__MODULE__{

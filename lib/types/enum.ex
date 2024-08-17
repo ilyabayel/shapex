@@ -1,6 +1,11 @@
 defmodule Shapex.Types.Enum do
   @moduledoc """
-  Enum type module for Shapex.
+  This module provides a type for validating enums.
+
+  Enums are a list of possible values that a value can be.
+
+  It's better to use the Shapex.Types.enum/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
   """
 
   @behaviour Shapex.Type
