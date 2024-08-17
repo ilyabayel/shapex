@@ -22,7 +22,7 @@ defmodule Shapex.Types.Dict do
   defstruct [:key_type, :value_type]
 
   @impl Shapex.Type
-  def validate(%__MODULE__ = schema, value) do
+  def validate(%__MODULE__{} = schema, value) do
     results =
       value
       |> Map.to_list()
