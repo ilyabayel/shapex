@@ -37,4 +37,6 @@ jobs:
       - name: Run tests
         run: mix test
       - name: Publish docs
+        env:
+          API_KEY: ${{ secrets.HEX_API_KEY }}
         run: mix hex.publish --yes
