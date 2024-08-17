@@ -1,4 +1,8 @@
 defmodule Shapex.Types do
+  @moduledoc """
+  Module that contains helper functions to define schema.
+  """
+
   alias Shapex.Types.Integer
   alias Shapex.Types.Float
   alias Shapex.Types.String
@@ -7,6 +11,7 @@ defmodule Shapex.Types do
   alias Shapex.Types.Enum
   alias Shapex.Types.Record
   alias Shapex.Types.Atom
+  alias Shapex.Types.Boolean
 
   @doc """
     Integer type for Shapex.
@@ -45,6 +50,18 @@ defmodule Shapex.Types do
     }
   end
 
+  @doc """
+    Float type for Shapex.
+    Validation rules:
+      - :gt - greater than
+      - :gte - greater than or equal
+      - :lt - less than
+      - :lte - less than or equal
+      - :eq - equal
+      - :neq - not equal
+      - :in - in list
+      - :not_in - not in list
+  """
   def float(validations \\ []) do
     %Float{
       validations: validations
@@ -75,8 +92,8 @@ defmodule Shapex.Types do
     ## Example
 
       map(%{
-        :name => string(),
-        optional(:age) => integer()
+        name: string(),
+        age: integer()
       })
   """
   def map(fields) do
@@ -91,7 +108,6 @@ defmodule Shapex.Types do
     ## Example
 
       map(%{
-        :name => string(),
         optional(:age) => integer()
       })
   """
@@ -99,18 +115,49 @@ defmodule Shapex.Types do
     {:optional, key}
   end
 
+  @doc """
+    List type for Shapex.
+
+    ## Example
+
+      list(integer())
+  """
   def list(item) do
     %List{
       item: item
     }
   end
 
+  @doc """
+    Enum type for Shapex.
+
+    ## Example
+
+      enum([integer(), string()])
+  """
   def enum(items) do
     %Enum{
       items: items
     }
   end
 
+  @doc """
+    Record type for Shapex. It's like a map, but fields are not pre-defined, useful for dictionaries.
+
+    ## Example
+
+      schema = record(string(), string())
+
+      dict = %{
+        "id1" => "value1",
+        "id2" => "value2"
+        "id3" => "value3"
+      }
+
+      Shapex.validate(schema, dict)
+
+      # {:ok, :valid}
+  """
   def record(key_type, value_type) do
     %Record{
       key_type: key_type,
@@ -118,9 +165,37 @@ defmodule Shapex.Types do
     }
   end
 
+  @doc """
+    Atom type for Shapex.
+
+    Validations:
+      - :eq - equality check
+      - :neq - not equal check
+
+    ## Example
+
+      atom(eq: :ok)
+  """
   def atom(validations) do
     %Atom{
       validations: validations
+    }
+  end
+
+  @doc """
+    Boolean type for Shapex.
+
+    Validations:
+      - :eq - equality check
+      - :neq - not equal check
+
+    ## Example
+
+      boolean(eq: true)
+  """
+  def boolean(expected_value) do
+    %Boolean{
+      eq: expected_value
     }
   end
 end
