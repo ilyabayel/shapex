@@ -36,11 +36,8 @@ defmodule Shapex.Types.Integer do
 
   defstruct [:validations]
 
-  def validate(_, value) when not is_integer(value),
-    do: {:error, %{type: "Value must be an integer"}}
-
   @impl Shapex.Type
-  def validate(%__MODULE__{} = schema, value) do
+  def validate(%__MODULE__{} = schema, value) when is_integer(value) do
     validation_results =
       Enum.reduce(schema.validations, %{}, fn
         {:custom, {rule_name, callback}}, errors ->
@@ -68,6 +65,9 @@ defmodule Shapex.Types.Integer do
       {:error, validation_results}
     end
   end
+
+  def validate(_schema, _value),
+    do: {:error, %{type: "Value must be an integer"}}
 
   defp do_validate(rule_name, target, value, message \\ nil)
 

@@ -19,7 +19,7 @@ defmodule Shapex.Types.Atom do
 
   defstruct [:validations]
 
-  def validate(schema, value) when is_atom(value) do
+  def validate(%__MODULE__{} = schema, value) when is_atom(value) do
     validation_results =
       Enum.reduce(schema.validations, %{}, fn
         {rule, {target, message}}, acc ->

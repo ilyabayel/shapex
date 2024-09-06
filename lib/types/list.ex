@@ -14,7 +14,7 @@ defmodule Shapex.Types.List do
   defstruct [:item]
 
   @spec validate(__MODULE__.t(), list()) :: {:ok, :valid} | {:error, term()}
-  def validate(schema, list) do
+  def validate(%__MODULE__{} = schema, list) when is_list(list) do
     errors =
       list
       |> Enum.with_index()
@@ -34,5 +34,9 @@ defmodule Shapex.Types.List do
     else
       {:error, errors}
     end
+  end
+
+  def validate(_, _) do
+    {:error, %{type: "Value must be a list"}}
   end
 end
