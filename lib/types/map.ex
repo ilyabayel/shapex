@@ -21,7 +21,7 @@ defmodule Shapex.Types.Map do
   defstruct [:fields]
 
   @spec validate(__MODULE__.t(), map()) :: {:ok, :valid} | {:error, term()}
-  def validate(schema, value) do
+  def validate(%__MODULE__{} = schema, value) when is_map(value) do
     keys = Map.keys(schema.fields)
 
     errors =
@@ -60,4 +60,6 @@ defmodule Shapex.Types.Map do
       {:error, errors}
     end
   end
+
+  def validate(_, _value), do: {:error, %{type: "Value must be a map"}}
 end
