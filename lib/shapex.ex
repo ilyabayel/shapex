@@ -14,10 +14,15 @@ defmodule Shapex do
     - map
     - record
     - string
+    - dict
   """
 
   @spec validate(Shapex.Type.t(), term()) :: {:ok, :valid} | {:error, term()}
   def validate(schema, value) do
     schema.__struct__.validate(schema, value)
+  end
+
+  defmacro schema(expression) do
+    Services.Builder.build(expression)
   end
 end
