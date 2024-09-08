@@ -1,5 +1,10 @@
-defmodule Services.Builder do
-  def build(expression) do
+defmodule Shapex.Services.SchemaBuilder do
+  @moduledoc """
+    This is implementation of the Schema DSL.
+    It accept expression of the DSL, parses it and generates shapex schema.
+  """
+
+  def call(expression) do
     build_schema(expression)
   end
 
