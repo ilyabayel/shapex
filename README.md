@@ -124,7 +124,7 @@ The differences between schema DSL and default function composition style are:
 | Boolean | `true` | `boolean(true)` |
 | Atom | `:atom` | `atom(eq: :atom)` |
 | String | `"name"` | `string(eq: "name")` |
-| Enum | `1 | 2 | 3` | `enum([integer(eq: 1), integer(eq: 2), integer(eq: 3)])` |
+| Enum | `1 \| 2 \| 3` | `enum([integer(eq: 1), integer(eq: 2), integer(eq: 3)])` |
 | Map | `%{name: "John Doe"}` | `map(key: string(eq: "John Doe"))` |
 
 
