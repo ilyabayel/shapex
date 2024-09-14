@@ -72,19 +72,19 @@ defmodule Shapex do
 
   animal_schema = Shapex.schema(
     %{
-      name: string(),
+      name: string(min_length: 2),
       family: :dog,
-      breed: ["Akita", "Husky", "Poodle"]
+      breed: "Akita" | "Husky" | "Poodle"
     }
     | %{
-      name: string(),
+      name: string(min_length: 2),
       family: :cat,
-      breed: ["Siamese", "Persian", "Maine Coon"]
+      breed: "Siamese" | "Persian" | "Maine Coon"
     }
     | %{
-      name: string(),
+      name: string(min_length: 2),
       family: :owl,
-      genus: ["Athene", "Bubo", "Strix"]
+      genus: "Athene" | "Bubo" | "Strix"
     }
   )
   ```
