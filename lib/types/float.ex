@@ -37,7 +37,7 @@ defmodule Shapex.Types.Float do
 
   defstruct [:validations]
 
-  @spec validate(t(), float()) :: {:ok, :valid} | {:error, map()}
+  @spec validate(t(), float()) :: :ok | {:error, map()}
   def validate(%__MODULE__{} = schema, value) when is_float(value) do
     validation_results =
       Enum.reduce(schema.validations, %{}, fn
@@ -55,7 +55,7 @@ defmodule Shapex.Types.Float do
       end)
 
     if validation_results == %{} do
-      {:ok, :valid}
+      :ok
     else
       {:error, validation_results}
     end

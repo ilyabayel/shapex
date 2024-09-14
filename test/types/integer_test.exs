@@ -4,9 +4,9 @@ defmodule Shapex.Types.FloatTest do
   alias Shapex.Types, as: S
 
   describe "validate/2 integer" do
-    test "should return {:ok, :valid} if valid" do
+    test "should return :ok if valid" do
       schema = S.integer(gt: 4, lt: 6)
-      assert {:ok, :valid} = Shapex.validate(schema, 5)
+      assert :ok = Shapex.validate(schema, 5)
     end
 
     test "should return error for gt" do

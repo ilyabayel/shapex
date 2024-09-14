@@ -7,7 +7,7 @@ defmodule Shapex.Types.AtomTest do
     test "should return success on valid eq" do
       schema = S.atom(eq: :foo)
 
-      assert {:ok, :valid} = Shapex.validate(schema, :foo)
+      assert :ok = Shapex.validate(schema, :foo)
     end
 
     test "should return error on invalid eq" do
@@ -20,7 +20,7 @@ defmodule Shapex.Types.AtomTest do
     test "should return error on valid neq" do
       schema = S.atom(neq: :foo)
 
-      assert {:ok, :valid} = Shapex.validate(schema, :bar)
+      assert :ok = Shapex.validate(schema, :bar)
     end
 
     test "should return error on invalid neq" do

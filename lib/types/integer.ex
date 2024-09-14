@@ -60,7 +60,7 @@ defmodule Shapex.Types.Integer do
       end)
 
     if validation_results == %{} do
-      {:ok, :valid}
+      :ok
     else
       {:error, validation_results}
     end

@@ -15,7 +15,7 @@ defmodule Shapex.Types.String do
   @enforce_keys [:validations]
   defstruct [:validations]
 
-  @spec validate(Shapex.Types.String.t(), String.t()) :: {:ok, :valid} | {:error, term()}
+  @spec validate(Shapex.Types.String.t(), String.t()) :: :ok | {:error, term()}
 
   def validate(%__MODULE__{} = schema, value) when is_binary(value) do
     errors =
@@ -35,7 +35,7 @@ defmodule Shapex.Types.String do
       end)
 
     if errors == %{} do
-      {:ok, :valid}
+      :ok
     else
       {:error, errors}
     end

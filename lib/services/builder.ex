@@ -10,6 +10,9 @@ defmodule Shapex.Services.SchemaBuilder do
 
   defp build_schema(expression) do
     case expression do
+      value when is_nil(value) ->
+        build_nil()
+
       value when is_integer(value) ->
         build_integer([[eq: value]])
 
@@ -25,14 +28,17 @@ defmodule Shapex.Services.SchemaBuilder do
       value when is_binary(value) ->
         build_string([[eq: value]])
 
-      enum when is_list(enum) ->
-        build_enum(enum)
-
       {:%{}, _, kw} ->
         build_map(kw)
 
+      {:any, _, _} ->
+        build_any()
+
       {:atom, _, args} ->
         build_atom(args)
+
+      {:number, _, args} ->
+        build_number(args)
 
       {:integer, _, args} ->
         build_integer(args)
@@ -55,8 +61,23 @@ defmodule Shapex.Services.SchemaBuilder do
       {:record, _, args} ->
         build_record(args)
 
+      {:|, _, [enum_item, expr]} ->
+        build_enum(expr, [enum_item])
+
       {:^, _, [expr]} ->
         expr
+    end
+  end
+
+  defp build_nil() do
+    quote do
+      %Shapex.Types.Nil{}
+    end
+  end
+
+  defp build_any() do
+    quote do
+      Shapex.Types.any()
     end
   end
 
@@ -77,6 +98,14 @@ defmodule Shapex.Services.SchemaBuilder do
 
     quote do
       apply(Shapex.Types, :atom, unquote(built_args))
+    end
+  end
+
+  defp build_number(args) do
+    built_args = build_args(args)
+
+    quote do
+      apply(Shapex.Types, :number, unquote(built_args))
     end
   end
 
@@ -118,12 +147,23 @@ defmodule Shapex.Services.SchemaBuilder do
     end
   end
 
-  defp build_enum(enum) do
-    built_enum_list = Enum.map(enum, &build_enum_item/1)
+  defp build_enum([], enum_items) do
+    built_enum_list =
+      enum_items
+      |> Enum.reverse()
+      |> Enum.map(&build_enum_item/1)
 
     quote do
       Shapex.Types.enum(unquote(built_enum_list))
     end
+  end
+
+  defp build_enum({:|, _, [enum_item, expr]}, enum_items) do
+    build_enum(expr, [enum_item | enum_items])
+  end
+
+  defp build_enum(enum_item, enum_items) do
+    build_enum([], [enum_item | enum_items])
   end
 
   defp build_enum_item(enum_item) do

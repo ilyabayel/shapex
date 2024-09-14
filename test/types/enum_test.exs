@@ -7,7 +7,7 @@ defmodule Shapex.Types.EnumTest do
     test "should return success if valid" do
       schema = S.enum([S.integer(eq: 1), S.integer(eq: 2), S.integer(eq: 3)])
 
-      assert {:ok, :valid} = Shapex.validate(schema, 1)
+      assert :ok = Shapex.validate(schema, 1)
     end
 
     test "should return error if value is not in enum" do

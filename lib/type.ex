@@ -16,12 +16,12 @@ defmodule Shapex.Type do
 
       def validate(schema, value) do
         results = case String.split(value, "@") do
-          [_, domain] when domain in schema.allowed_domains -> {:ok, :valid}
+          [_, domain] when domain in schema.allowed_domains -> :ok
           _ -> {:error, %{type: "Invalid email"}}
         end
 
         if results == %{} do
-          {:ok, :valid}
+          :ok
         else
           {:error, results}
         end
@@ -30,11 +30,11 @@ defmodule Shapex.Type do
 
     Shapex.validate(%Email{allowed_domains: ["example.com"]}, "ilya@example.com")
 
-    {:ok, :valid}
+    :ok
     ```
   """
 
   @type t :: struct()
 
-  @callback validate(schema :: t(), value :: term()) :: {:ok, :valid} | {:error, term()}
+  @callback validate(schema :: t(), value :: term()) :: :ok | {:error, term()}
 end

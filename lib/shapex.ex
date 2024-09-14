@@ -95,9 +95,9 @@ defmodule Shapex do
 
       iex> some_schema = Shapex.Types.string()
       iex> Shapex.validate(some_schema, "string")
-      {:ok, :valid}
+      :ok
   """
-  @spec validate(Shapex.Type.t(), term()) :: {:ok, :valid} | {:error, term()}
+  @spec validate(Shapex.Type.t(), term()) :: :ok | {:error, term()}
   def validate(schema, value) do
     schema.__struct__.validate(schema, value)
   end

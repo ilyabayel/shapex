@@ -30,15 +30,27 @@ defmodule Shapex.Types.Dict do
         {k, Shapex.validate(schema.key_type, k), Shapex.validate(schema.value_type, v)}
       end)
       |> Enum.reduce(%{}, fn
-        {_key, {:ok, :valid}, {:ok, :valid}}, acc ->
+        {_key, :ok, :ok}, acc ->
           acc
 
         {key, key_result, value_result}, acc ->
-          Map.put(acc, key, %{key: elem(key_result, 1), value: elem(value_result, 1)})
+          key_result =
+            case key_result do
+              :ok -> :valid
+              {:error, key_errors} -> key_errors
+            end
+
+          value_result =
+            case value_result do
+              :ok -> :valid
+              {:error, value_errors} -> value_errors
+            end
+
+          Map.put(acc, key, %{key: key_result, value: value_result})
       end)
 
     if results == %{} do
-      {:ok, :valid}
+      :ok
     else
       {:error, results}
     end

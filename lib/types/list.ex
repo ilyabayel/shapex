@@ -13,7 +13,7 @@ defmodule Shapex.Types.List do
 
   defstruct [:item]
 
-  @spec validate(__MODULE__.t(), list()) :: {:ok, :valid} | {:error, term()}
+  @spec validate(__MODULE__.t(), list()) :: :ok | {:error, term()}
   def validate(%__MODULE__{} = schema, list) when is_list(list) do
     errors =
       list
@@ -23,14 +23,14 @@ defmodule Shapex.Types.List do
         fn
           {item, idx}, errors ->
             case Shapex.validate(schema.item, item) do
-              {:ok, :valid} -> errors
+              :ok -> errors
               {:error, item_errors} -> Map.put(errors, idx, item_errors)
             end
         end
       )
 
     if errors == %{} do
-      {:ok, :valid}
+      :ok
     else
       {:error, errors}
     end

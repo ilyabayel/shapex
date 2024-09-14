@@ -20,7 +20,7 @@ defmodule Shapex.Types.Map do
   @enforce_keys [:fields]
   defstruct [:fields]
 
-  @spec validate(__MODULE__.t(), map()) :: {:ok, :valid} | {:error, term()}
+  @spec validate(__MODULE__.t(), map()) :: :ok | {:error, term()}
   def validate(%__MODULE__{} = schema, value) when is_map(value) do
     keys = Map.keys(schema.fields)
 
@@ -32,7 +32,7 @@ defmodule Shapex.Types.Map do
           {:optional, key}, errors ->
             if Map.has_key?(value, key) do
               case Shapex.validate(schema.fields[key], Map.get(value, key)) do
-                {:ok, :valid} -> errors
+                :ok -> errors
                 {:error, field_errors} -> Map.put(errors, key, field_errors)
               end
             else
@@ -44,7 +44,7 @@ defmodule Shapex.Types.Map do
               Map.put(errors, key, %{required: "Key #{key} is required"})
             else
               case Shapex.validate(schema.fields[key], Map.get(value, key)) do
-                {:ok, :valid} ->
+                :ok ->
                   errors
 
                 {:error, field_errors} ->
@@ -55,7 +55,7 @@ defmodule Shapex.Types.Map do
       )
 
     if errors == %{} do
-      {:ok, :valid}
+      :ok
     else
       {:error, errors}
     end

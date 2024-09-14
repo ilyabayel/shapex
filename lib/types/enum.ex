@@ -17,9 +17,9 @@ defmodule Shapex.Types.Enum do
         }
 
   def validate(%__MODULE__{} = schema, value) do
-    case Enum.find(schema.items, fn item -> Shapex.validate(item, value) == {:ok, :valid} end) do
+    case Enum.find(schema.items, fn item -> Shapex.validate(item, value) == :ok end) do
       nil -> {:error, {"Value must be one of", schema.items}}
-      _ -> {:ok, :valid}
+      _ -> :ok
     end
   end
 end

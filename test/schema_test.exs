@@ -6,6 +6,18 @@ defmodule Shapex.SchemaTest do
   require Shapex
 
   describe "schema/1" do
+    test "should return valid schema for any" do
+      schema = Shapex.schema(any())
+
+      assert S.any() == schema
+    end
+
+    test "should return valid schema for nil" do
+      schema = Shapex.schema(nil)
+
+      assert %S.Nil{} == schema
+    end
+
     test "should return valid schema for integer" do
       schema = Shapex.schema(1)
 
@@ -31,16 +43,19 @@ defmodule Shapex.SchemaTest do
     end
 
     test "shoould generate schema for enums" do
-      schema = Shapex.schema([1, 1.0, "string", :atom, true, %{key: "value"}])
+      enum = Shapex.schema(1 | 1.0 | "string" | :atom | true | %{:key => "value"})
 
-      assert S.enum([
-               S.integer(eq: 1),
-               S.float(eq: 1.0),
-               S.string(eq: "string"),
-               S.atom(eq: :atom),
-               S.boolean(true),
-               S.map(%{key: S.string(eq: "value")})
-             ]) == schema
+      expected_enum =
+        S.enum([
+          S.integer(eq: 1),
+          S.float(eq: 1.0),
+          S.string(eq: "string"),
+          S.atom(eq: :atom),
+          S.boolean(true),
+          S.map(%{key: S.string(eq: "value")})
+        ])
+
+      assert expected_enum == enum
     end
 
     test "should return valid schema for map" do
@@ -121,7 +136,7 @@ defmodule Shapex.SchemaTest do
                atom: atom(neq: ^not_atom),
                bool: boolean(^expected_bool),
                dict: dict(^key, ^value),
-               enum: [^enum_int, ^enum_float],
+               enum: ^enum_int | ^enum_float,
                float: float(gt: ^float_value),
                int: integer(gte: ^int_value),
                list: list(integer(gte: 10)),

@@ -12,6 +12,8 @@ defmodule Shapex.Types do
   alias Shapex.Types.Dict
   alias Shapex.Types.Atom
   alias Shapex.Types.Boolean
+  alias Shapex.Types.Any
+  alias Shapex.Types.Number
 
   @doc """
     Integer type for Shapex.
@@ -156,7 +158,7 @@ defmodule Shapex.Types do
 
       Shapex.validate(schema, value)
 
-      # {:ok, :valid}
+      # :ok
   """
   def dict(key_type, value_type) do
     %Dict{
@@ -185,17 +187,31 @@ defmodule Shapex.Types do
   @doc """
     Boolean type for Shapex.
 
-    Validations:
-      - :eq - equality check
-      - :neq - not equal check
-
     ## Example
 
-      boolean(eq: true)
+      boolean(true)
   """
-  def boolean(expected_value) do
+  def boolean(expected_value \\ nil) do
     %Boolean{
       eq: expected_value
     }
+  end
+
+  @doc """
+    Any type for Shapex.
+
+    ## Example
+
+      any()
+  """
+  def any() do
+    %Any{}
+  end
+
+  @doc """
+  Number type for Shapex.
+  """
+  def number(validations) do
+    %Number{validations: validations}
   end
 end

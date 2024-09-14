@@ -7,7 +7,7 @@ defmodule Shapex.Types.ListTets do
     test "should return success if valid" do
       schema = S.list(S.integer(gt: 0))
 
-      assert {:ok, :valid} = Shapex.validate(schema, [1, 2, 3])
+      assert :ok = Shapex.validate(schema, [1, 2, 3])
     end
 
     test "should return error if type doesn't match" do
@@ -24,7 +24,7 @@ defmodule Shapex.Types.ListTets do
     test "should return ok for empty list" do
       schema = S.list(S.integer(gt: 0))
 
-      assert {:ok, :valid} = Shapex.validate(schema, [])
+      assert :ok = Shapex.validate(schema, [])
     end
 
     test "should return error for if there is an error in a map" do

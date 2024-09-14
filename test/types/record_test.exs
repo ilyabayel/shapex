@@ -13,7 +13,7 @@ defmodule Shapex.Types.DictTest do
         "3" => 3
       }
 
-      assert {:ok, :valid} = Shapex.validate(schema, data)
+      assert :ok = Shapex.validate(schema, data)
     end
 
     test "should return error on valid data" do

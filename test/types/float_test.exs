@@ -4,9 +4,9 @@ defmodule Shapex.Types.IntegerTest do
   alias Shapex.Types, as: S
 
   describe "validate/2 integer" do
-    test "should return {:ok, :valid} if valid" do
+    test "should return :ok if valid" do
       schema = S.float(gt: 4.0, lt: 6.0)
-      assert {:ok, :valid} = Shapex.validate(schema, 5.0)
+      assert :ok = Shapex.validate(schema, 5.0)
     end
 
     test "should return error for gt" do

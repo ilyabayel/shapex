@@ -18,6 +18,9 @@ defmodule Shapex.Types.Boolean do
   @impl Shapex.Type
   def validate(%__MODULE__{} = schema, value) when is_boolean(value) do
     case schema.eq do
+      nil ->
+        :ok
+
       {expected_value, message} when value != expected_value ->
         {:error, %{eq: message}}
 
@@ -25,7 +28,7 @@ defmodule Shapex.Types.Boolean do
         {:error, %{eq: "Value must be #{schema.eq}, got #{value}"}}
 
       _ ->
-        {:ok, :valid}
+        :ok
     end
   end
 

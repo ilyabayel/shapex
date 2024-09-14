@@ -35,7 +35,7 @@ defmodule UserValidator do
 
   def validate_user(user_params) do
     case Shapex.validate(@user_schema, user_params) do
-      {:ok, :valid} -> insert_user(user)
+      :ok -> insert_user(user)
       {:error, errors} ->
         Log.error("Validation failed", %{errors: errors})
         {:error, errors}
@@ -93,23 +93,23 @@ animal_schema = S.enum([
 ```elixir
 require Shapex
 
-animal_schema = Shapex.schema([
+animal_schema = Shapex.schema(
   %{
     name: string(min_length: 2),
     family: :dog,
-    breed: ["Akita", "Husky", "Poodle"]
-  },
-  %{
+    breed: "Akita" | "Husky" | "Poodle"
+  }
+  | %{
     name: string(min_length: 2),
     family: :cat,
-    breed: ["Siamese", "Persian", "Maine Coon"]
-  },
-  %{
+    breed: "Siamese" | "Persian" | "Maine Coon"
+  }
+  | %{
     name: string(min_length: 2),
     family: :owl,
-    genus: ["Athene", "Bubo", "Strix"]
-  },
-])
+    genus: "Athene" | "Bubo" | "Strix"
+  }
+)
 ```
 
 As you can see you can use built-in function without any import, since they are supported by the DSL. They copy API of `Shapex.Types` module functions.
@@ -125,7 +125,7 @@ The differences between schema DSL and default function composition style are:
 | Boolean | `true` | `boolean(true)` |
 | Atom | `:atom` | `atom(eq: :atom)` |
 | String | `"name"` | `string(eq: "name")` |
-| Enum | `[1, 2, 3]` | `enum([integer(eq: 1), integer(eq: 2), integer(eq: 3)])` |
+| Enum | `1 | 2 | 3` | `enum([integer(eq: 1), integer(eq: 2), integer(eq: 3)])` |
 | Map | `%{name: "John Doe"}` | `map(key: string(eq: "John Doe"))` |
 
 

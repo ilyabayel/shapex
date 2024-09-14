@@ -4,9 +4,9 @@ defmodule Shapex.Types.StringTest do
   alias Shapex.Types, as: S
 
   describe "validate/2 string" do
-    test "should return {:ok, :valid} if valid" do
+    test "should return :ok if valid" do
       schema = S.string()
-      assert {:ok, :valid} = Shapex.validate(schema, "hey")
+      assert :ok = Shapex.validate(schema, "hey")
     end
 
     test "should return error for min_length" do

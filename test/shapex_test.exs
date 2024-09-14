@@ -28,7 +28,7 @@ defmodule ShapexTest do
         }
       }
 
-      assert {:ok, :valid} = Shapex.validate(@user_schema, user)
+      assert :ok = Shapex.validate(@user_schema, user)
     end
 
     test "invalid user" do
@@ -101,7 +101,7 @@ defmodule ShapexTest do
           }
         }
 
-      assert {:ok, :valid} = Shapex.validate(@config_schema, data)
+      assert :ok = Shapex.validate(@config_schema, data)
     end
 
     test "invalid string key map" do

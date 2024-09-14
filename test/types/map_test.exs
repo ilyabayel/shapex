@@ -11,7 +11,7 @@ defmodule Shapex.Types.MapTest do
           age: S.integer(gt: 0)
         })
 
-      assert {:ok, :valid} = Shapex.validate(schema, %{name: "John", age: 30})
+      assert :ok = Shapex.validate(schema, %{name: "John", age: 30})
     end
 
     test "should return error if type doesn't match" do
@@ -53,7 +53,7 @@ defmodule Shapex.Types.MapTest do
           S.optional(:name) => S.string()
         })
 
-      assert {:ok, :valid} = Shapex.validate(schema, %{age: 12})
+      assert :ok = Shapex.validate(schema, %{age: 12})
     end
   end
 end

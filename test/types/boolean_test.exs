@@ -7,7 +7,7 @@ defmodule Shapex.Types.BooleanTest do
     test "should return success on valid eq" do
       schema = S.boolean(true)
 
-      assert {:ok, :valid} = Shapex.validate(schema, true)
+      assert :ok = Shapex.validate(schema, true)
     end
 
     test "should return error on invalid eq" do
