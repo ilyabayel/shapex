@@ -7,16 +7,18 @@ defmodule Shapex do
   ## Built-in types
 
   There are some built-in types that you can use to define your schema:
+    - any
     - atom
     - boolean
+    - dict
     - enum
     - float
     - integer
     - list
     - map
-    - record
+    - nil
+    - number
     - string
-    - dict
 
   ## Schema DSL
 
@@ -32,7 +34,7 @@ defmodule Shapex do
   true -> boolean(true)
   :atom -> atom(eq: :atom)
   "string" -> string(eq: "string")
-  [1, 2, 3] -> enum([integer(eq: 1), integer(eq: 2), integer(eq: 3)])
+  1 | 2 | 3 -> enum([integer(eq: 1), integer(eq: 2), integer(eq: 3)])
   %{name: "John Doe"} -> map(key: string(eq: "John Doe"))
   ```
 
@@ -68,23 +70,23 @@ defmodule Shapex do
 
   require Shapex
 
-  animal_schema = Shapex.schema([
+  animal_schema = Shapex.schema(
     %{
       name: string(),
       family: :dog,
       breed: ["Akita", "Husky", "Poodle"]
-    },
-    %{
+    }
+    | %{
       name: string(),
       family: :cat,
       breed: ["Siamese", "Persian", "Maine Coon"]
-    },
-    %{
+    }
+    | %{
       name: string(),
       family: :owl,
       genus: ["Athene", "Bubo", "Strix"]
-    },
-  ])
+    }
+  )
   ```
   """
 

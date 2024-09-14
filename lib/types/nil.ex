@@ -1,4 +1,8 @@
 defmodule Shapex.Types.Nil do
+  @moduledoc """
+  This module provides a type for validating nil values.
+  """
+
   @behaviour Shapex.Type
 
   defstruct []

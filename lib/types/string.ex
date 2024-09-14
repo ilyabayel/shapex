@@ -1,4 +1,18 @@
 defmodule Shapex.Types.String do
+  @moduledoc """
+  This module provides a type for validating strings.
+
+  It's better to use the Shapex.Types.string/1 function to create a schema,
+  since it covers implementation details and provides a more user-friendly API.
+
+  Existing validations:
+  - :min_length - minimum length
+  - :max_length - maximum length
+  - :length - exact length
+  - :eq - equal
+  - :neq - not equal
+  - :regex - regex match
+  """
   @behaviour Shapex.Type
 
   @type type_or_tuple(t) :: t | {t, error_message :: String.t()}
