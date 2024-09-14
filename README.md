@@ -7,7 +7,6 @@ Key features:
 
 ## Future plans
 
-- [ ] Add macro to make defining schema easier
 - [ ] Add more built-in types
   - [ ] Date
   - [ ] Time
